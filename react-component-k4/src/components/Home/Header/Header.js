@@ -21,6 +21,10 @@ export default function Header() {
                     <NavLink activeClassName="activeNavItem" activeStyle={{fontWeight:'bold'}} className="nav-link" to="/contact">Contact</NavLink>
 
                     </li>
+                    <li className="nav-item dropdown">
+                    <NavLink activeClassName="activeNavItem" activeStyle={{fontWeight:'bold'}} className="nav-link" to="/login">Login</NavLink>
+
+                    </li>
                 </ul>
                 <form className="form-inline my-2 my-lg-0">
                     <input className="form-control mr-sm-2" type="text" placeholder="Search" />
