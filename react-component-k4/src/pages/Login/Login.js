@@ -1,17 +1,34 @@
 import React, { useState } from 'react'
+import { Prompt } from 'react-router';
 
 export default function Login(props) {
 
-    const [userLogin,setUserLogin] = useState({userName:'',passWord:''})
+    const [userLogin,setUserLogin] = useState({userName:'',passWord:'',status:false})
 
 
-    console.log(userLogin)
+    // console.log(userLogin)
+   
     const handleChange = (event) => {
         const {name,value} = event.target;
-        setUserLogin({
+        const newUserLogin ={
             ...userLogin,
             [name]:value
-        });
+        };
+        let valid = true;
+        for(let key in newUserLogin){
+            if(key !== 'status') {
+                if(newUserLogin[key].trim() === ''){
+                    newUserLogin.status = true;
+                    valid = false;
+                }
+            }
+        }
+        if(!valid) {
+            newUserLogin.status = true;
+        }else {
+            newUserLogin.status = false;
+        }
+        setUserLogin(newUserLogin);
     }
 
     const handleLogin = (event) => {
@@ -47,6 +64,10 @@ export default function Login(props) {
             <div className="form-group">
                <button className="btn btn-success">Đăng nhập</button>
             </div>
+            <Prompt when={userLogin.status} message={(location)=>{
+                console.log('location',location)
+                return 'Bạn có chắc muốn rời khỏi trang này !'
+            }}/>
         </form>
     )
 }
