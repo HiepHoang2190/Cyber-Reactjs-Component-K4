@@ -1,14 +1,15 @@
 
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import {useSelector,useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { addTaskApi, checkTaskApi, deleteTaskApi, getTaskListApi ,rejectTaskApi} from '../../redux/actions/ToDoListAction';
 import { GET_TASK_API } from '../../redux/constants/ToDoListConst';
 export default function ToDoListRedux(props) {
 
     // Lấy tasklist từ redux về
-    const {taskList} = useSelector(state => state.ToDoListReducer);
+    const { taskList } = useSelector(state => state.ToDoListReducer);
     const dispatch = useDispatch();
-    let [state,setState] = useState({
+    let [state, setState] = useState({
         taskList: [],
         values: {
             taskName: ''
@@ -18,7 +19,7 @@ export default function ToDoListRedux(props) {
         }
     });
 
-    const handleChange = (e)=> {
+    const handleChange = (e) => {
         let { value, name } = e.target;
         console.log(value, name);
         let newValues = { ...state.values };
@@ -41,62 +42,27 @@ export default function ToDoListRedux(props) {
             values: newValues,
             errors: newErrors
         })
-    } 
+    }
 
 
     const getTaskList = () => {
-        let promise = Axios({
-            url: 'http://svcy.myclass.vn/api/ToDoList/GetAllTask',
-            method: 'GET'
-        });
-
-        promise.then((result) => {
-            console.log(result.data);
-            //Nếu gọi api lấy về kết quả thành công 
-            //=> set lại state của component
-            dispatch({
-                type:GET_TASK_API,
-                taskList:result.data
-            })
-
-            console.log('thành công')
-        });
-
-
-        promise.catch((err) => {
-            console.log('thất bại')
-
-            console.log(err.response.data)
-        });
+        dispatch(getTaskListApi());
     }
 
     const addTask = (e) => {
         e.preventDefault();//Chặn sự kiện reload lại trang
         console.log(state.values.taskName);
-        let promise = Axios({
-            url: 'http://svcy.myclass.vn/api/ToDoList/AddTask',
-            method: 'POST',
-            data: { taskName: state.values.taskName }
-        });
-        // Xử lý thành công
 
-        promise.then(result => {
-            //    alert(result.data);
-            getTaskList();
-        });
-
-        //Xử lý thất bại
-        promise.catch(errors => {
-            alert(errors.response.data)
-        });
+        // Xử lý nhận dữ liệu từ người dùng nhập => gọi action addTaskApi()
+        dispatch(addTaskApi(state.values.taskName))
     }
 
     useEffect(() => {
-            getTaskList();
+        getTaskList();
 
 
         return () => {
-            
+
         }
     }, [])
 
@@ -111,7 +77,7 @@ export default function ToDoListRedux(props) {
                     }}>
                         <i className="fa fa-trash-alt" />
                     </button>
-                    <button type="button" className="complete" onClick={()=>{
+                    <button type="button" className="complete" onClick={() => {
                         checkTask(item.taskName)
                     }}>
                         <i className="far fa-check-circle" />
@@ -122,7 +88,7 @@ export default function ToDoListRedux(props) {
         })
     }
 
-    
+
     const renderTaskToDoDone = () => {
         return taskList.filter(item => item.status).map((item, index) => {
             return <li key={index}>
@@ -133,7 +99,7 @@ export default function ToDoListRedux(props) {
                     }}>
                         <i className="fa fa-trash-alt" />
                     </button>
-                    <button  type="button" className="complete" onClick={()=>{
+                    <button type="button" className="complete" onClick={() => {
                         rejectTask(item.taskName)
                     }}>
                         <i className="far fa-undo" />
@@ -144,66 +110,24 @@ export default function ToDoListRedux(props) {
         })
     }
 
-     // Xử lý reject task
-     const rejectTask = (taskName) => {
-        let promise = Axios({
-            url: `http://svcy.myclass.vn/api/ToDoList/rejectTask?taskName=${taskName}`,
-            method: 'PUT'
-        });
-
-        // Xử lý thành công
-        promise.then(result => {
-            alert(result.data);
-            getTaskList();
-        });
-
-        //Xử lý thất bại
-        promise.catch(errors => {
-            alert(errors.response.data)
-        }); 
+    // Xử lý reject task
+    const rejectTask = (taskName) => {
+        dispatch(rejectTaskApi(taskName))
     }
     // Xử lý done task
-    const  checkTask = (taskName) => {
-        let promise = Axios({
-            url: `http://svcy.myclass.vn/api/ToDoList/doneTask?taskName=${taskName}`,
-            method: 'PUT'
-        });
-
-        // Xử lý thành công
-        promise.then(result => {
-            alert(result.data);
-            getTaskList();
-        });
-
-        //Xử lý thất bại
-        promise.catch(errors => {
-            alert(errors.response.data)
-        });
+    const checkTask = (taskName) => {
+     dispatch(checkTaskApi(taskName))
     }
 
-  // Hàm xử lý xóa Tăsk
-  const delTask = (taskName) => {
-    let promise = Axios({
-        url: `http://svcy.myclass.vn/api/ToDoList/deleteTask?taskName=${taskName}`,
-        method: 'DELETE'
-    });
-
-    // Xử lý thành công
-    promise.then(result => {
-        alert(result.data);
-        getTaskList();
-    });
-
-    //Xử lý thất bại
-    promise.catch(errors => {
-        alert(errors.response.data)
-    });
-}
+    // Hàm xử lý xóa Tăsk
+    const delTask = (taskName) => {
+        dispatch(deleteTaskApi(taskName))
+    }
 
     return (
         <div className="card">
             <div className="card__header">
-            <img src="./img/X2oObC4.png" />
+                <img src="./img/X2oObC4.png" />
             </div>
             {/* <h2>hello!</h2> */}
             <form className="card__body" onSubmit={addTask}>
@@ -221,7 +145,7 @@ export default function ToDoListRedux(props) {
                     <div className="card__todo">
                         {/* Uncompleted tasks */}
                         <ul className="todo" id="todo">
-                           {renderTaskToDo()}
+                            {renderTaskToDo()}
                         </ul>
                         {/* Completed tasks */}
                         <ul className="todo" id="completed">
