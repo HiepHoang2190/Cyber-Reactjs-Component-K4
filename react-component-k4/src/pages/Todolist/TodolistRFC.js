@@ -65,8 +65,25 @@ export default function TodolistRFC(props) {
         });
     }
 
-    const handleSubmit = (e) => {
+    const addTask = (e) => {
         e.preventDefault();//Chặn sự kiện reload lại trang
+        console.log(state.values.taskName);
+        let promise = Axios({
+            url: 'http://svcy.myclass.vn/api/ToDoList/AddTask',
+            method: 'POST',
+            data: { taskName: state.values.taskName }
+        });
+        // Xử lý thành công
+
+        promise.then(result => {
+            //    alert(result.data);
+            getTaskList();
+        });
+
+        //Xử lý thất bại
+        promise.catch(errors => {
+            alert(errors.response.data)
+        });
     }
 
     useEffect(() => {
@@ -85,12 +102,12 @@ export default function TodolistRFC(props) {
                 <span>{item.taskName}</span>
                 <div className="buttons">
                     <button className="remove" type="button" onClick={() => {
-                        // delTask(item.taskName)
+                        delTask(item.taskName)
                     }}>
                         <i className="fa fa-trash-alt" />
                     </button>
                     <button type="button" className="complete" onClick={()=>{
-                        // checkTask(item.taskName)
+                        checkTask(item.taskName)
                     }}>
                         <i className="far fa-check-circle" />
                         <i className="fas fa-check-circle" />
@@ -107,12 +124,12 @@ export default function TodolistRFC(props) {
                 <span>{item.taskName}</span>
                 <div className="buttons">
                     <button className="remove" type="button" onClick={() => {
-                        // delTask(item.taskName)
+                        delTask(item.taskName)
                     }}>
                         <i className="fa fa-trash-alt" />
                     </button>
                     <button  type="button" className="complete" onClick={()=>{
-                        // rejectTask(item.taskName)
+                        rejectTask(item.taskName)
                     }}>
                         <i className="far fa-undo" />
                         <i className="fas fa-undo" />
@@ -122,6 +139,61 @@ export default function TodolistRFC(props) {
         })
     }
 
+     // Xử lý reject task
+     const rejectTask = (taskName) => {
+        let promise = Axios({
+            url: `http://svcy.myclass.vn/api/ToDoList/rejectTask?taskName=${taskName}`,
+            method: 'PUT'
+        });
+
+        // Xử lý thành công
+        promise.then(result => {
+            alert(result.data);
+            getTaskList();
+        });
+
+        //Xử lý thất bại
+        promise.catch(errors => {
+            alert(errors.response.data)
+        }); 
+    }
+    // Xử lý done task
+    const  checkTask = (taskName) => {
+        let promise = Axios({
+            url: `http://svcy.myclass.vn/api/ToDoList/doneTask?taskName=${taskName}`,
+            method: 'PUT'
+        });
+
+        // Xử lý thành công
+        promise.then(result => {
+            alert(result.data);
+            getTaskList();
+        });
+
+        //Xử lý thất bại
+        promise.catch(errors => {
+            alert(errors.response.data)
+        });
+    }
+
+  // Hàm xử lý xóa Tăsk
+  const delTask = (taskName) => {
+    let promise = Axios({
+        url: `http://svcy.myclass.vn/api/ToDoList/deleteTask?taskName=${taskName}`,
+        method: 'DELETE'
+    });
+
+    // Xử lý thành công
+    promise.then(result => {
+        alert(result.data);
+        getTaskList();
+    });
+
+    //Xử lý thất bại
+    promise.catch(errors => {
+        alert(errors.response.data)
+    });
+}
 
     return (
         <div className="card">
@@ -129,7 +201,7 @@ export default function TodolistRFC(props) {
             <img src="./img/X2oObC4.png" />
             </div>
             {/* <h2>hello!</h2> */}
-            <form className="card__body" onSubmit={handleSubmit}>
+            <form className="card__body" onSubmit={addTask}>
                 <div className="card__content">
                     <div className="card__title">
                         <h2>My Tasks</h2>
@@ -137,7 +209,7 @@ export default function TodolistRFC(props) {
                     </div>
                     <div className="card__add">
                         <input id="newTask" name="taskName" type="text" placeholder="Enter an activity..." onChange={handleChange} />
-                        <button id="addItem">
+                        <button id="addItem" type="submit" onClick={addTask}>
                             <i className="fa fa-plus" />
                         </button>
                     </div>
