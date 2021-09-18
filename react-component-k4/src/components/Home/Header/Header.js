@@ -41,12 +41,17 @@ export default function Header() {
                         <NavLink activeClassName="activeNavItem" activeStyle={{ fontWeight: 'bold' }} className="nav-link" to="/todolistredux">To do list redux</NavLink>
 
                     </li>
+                    <li className="nav-item dropdown">
+                        <NavLink activeClassName="activeNavItem" activeStyle={{ fontWeight: 'bold' }} className="nav-link" to="/todolistsaga">To do list saga</NavLink>
+
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bài tập</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownId">
                             <NavLink className="dropdown-item" to="/todolistrfc">To do list rfc</NavLink>
                             <NavLink className="dropdown-item" to="/todolistrcc">To do list rcc</NavLink>
                             <NavLink className="dropdown-item" to="/todolistredux">To do list redux</NavLink>
+                            <NavLink className="dropdown-item" to="/todolistsaga">To do list saga</NavLink>
                         </div>
                     </li>
                 </ul>

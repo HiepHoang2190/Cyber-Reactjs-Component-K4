@@ -12,7 +12,7 @@ import Profile from './pages/Profile/Profile';
 import Todolist from './pages/Todolist/Todolist';
 import TodolistRedux from './pages/Todolist/TodolistRedux';
 import TodolistRFC from './pages/Todolist/TodolistRFC';
-
+import BaiTapToDoListSaga from './pages/BaiTapToDoListSaga/BaiTapToDoListSaga'
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +27,7 @@ function App() {
         <Route exact path='/todolistrfc' component={TodolistRFC} />  
         <Route exact path='/todolistrcc' component={Todolist} />  
         <Route exact path='/todolistredux' component={TodolistRedux} />  
+        <Route exact path='/todolistsaga' component={BaiTapToDoListSaga} />  
         <Route exact path='/' component={Home} />
         <Route exact path='*' component={PageNotFound}/>
       </Switch>
