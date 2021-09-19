@@ -9,14 +9,22 @@ import {toDoListService} from '../../services/ToDoListService';
  */
 
 function* getTaskApiAction(action) {
+    // put gioongs dispatch action
+    yield put({
+        type:'DISPLAY_LOADING'
+    })
 
-    console.log('actionSaga',action)
+    yield delay(500)
+    // console.log('actionSaga',action)
     let {data,status} = yield call(toDoListService.getTaskApi);
   
     //Sau khi lấy giá trị thành công dùng put (giống dispatch bên thunk) 
     yield put({
         type:GET_TASK_API,
         taskList:data
+    })
+    yield put ({
+        type:'HIDE_LOADING'
     })
    
 }
