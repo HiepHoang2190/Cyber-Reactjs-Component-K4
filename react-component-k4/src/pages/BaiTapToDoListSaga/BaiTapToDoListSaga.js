@@ -1,11 +1,17 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
+
 import {useDispatch,useSelector} from 'react-redux';
+import { ADD_TASK_API, GET_TASKLIST_API } from '../../redux/constants/ToDoListConst';
+
+
 export default function BaiTapToDoListSaga(props) {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch(); 
     const {taskList} = useSelector(state => state.ToDoListReducer)
-    let [state,setState] = useState({
+
+
+    let [state, setState] = useState({
         taskList: [],
         values: {
             taskName: ''
@@ -15,9 +21,8 @@ export default function BaiTapToDoListSaga(props) {
         }
     });
 
-    const handleChange = (e)=> {
+    const handleChange = (e) => {
         let { value, name } = e.target;
-        console.log(value, name);
         let newValues = { ...state.values };
 
         newValues = { ...newValues, [name]: value };
@@ -38,29 +43,50 @@ export default function BaiTapToDoListSaga(props) {
             values: newValues,
             errors: newErrors
         })
-    } 
+    }
 
 
     const getTaskList = () => {
-        // dispatch action saga
+        //Dispatch action saga
         dispatch({
-            type:'getTaskApiAction',
-            data:'abc'
+            type:GET_TASKLIST_API,
+           
         })
     }
 
     const addTask = (e) => {
-      
+        e.preventDefault();
+        dispatch({
+            type:ADD_TASK_API,
+            taskName: state.values.taskName
+        })
     }
 
     useEffect(() => {
-        //    Gọi hàm getTaskList
+        //Gọi hàm getTaskList
         getTaskList();
 
         return () => {
-            
+
         }
     }, [])
+
+    //Xử lý reject task
+    const rejectTask = (taskName)=>{
+      
+
+    }
+
+    //Xử lý done task
+   const  checkTask = (taskName) => {
+      
+    }
+
+
+    //Hàm xử lý xóa task
+    const delTask = (taskName) => {
+   
+    }
 
 
     const renderTaskToDo = () => {
@@ -73,7 +99,7 @@ export default function BaiTapToDoListSaga(props) {
                     }}>
                         <i className="fa fa-trash-alt" />
                     </button>
-                    <button type="button" className="complete" onClick={()=>{
+                    <button type="button" className="complete" onClick={() => {
                         checkTask(item.taskName)
                     }}>
                         <i className="far fa-check-circle" />
@@ -84,7 +110,7 @@ export default function BaiTapToDoListSaga(props) {
         })
     }
 
-    
+
     const renderTaskToDoDone = () => {
         return taskList.filter(item => item.status).map((item, index) => {
             return <li key={index}>
@@ -95,7 +121,7 @@ export default function BaiTapToDoListSaga(props) {
                     }}>
                         <i className="fa fa-trash-alt" />
                     </button>
-                    <button  type="button" className="complete" onClick={()=>{
+                    <button type="button" className="complete" onClick={() => {
                         rejectTask(item.taskName)
                     }}>
                         <i className="far fa-undo" />
@@ -106,19 +132,6 @@ export default function BaiTapToDoListSaga(props) {
         })
     }
 
-     // Xử lý reject task
-     const rejectTask = (taskName) => {
-       
-    }
-    // Xử lý done task
-    const  checkTask = (taskName) => {
-        
-    }
-
-  // Hàm xử lý xóa Tăsk
-  const delTask = (taskName) => {
-   
-}
 
     return (
         <div className="card">
@@ -126,9 +139,9 @@ export default function BaiTapToDoListSaga(props) {
                 dispatch({
                     type:'getTaskApiAction'
                 })
-            }}>Dispatch action saga getTaskApit</button>
+            }}>Dispatch action saga getTaskAPI</button>
             <div className="card__header">
-            <img src="./img/X2oObC4.png" />
+                <img src="./img/X2oObC4.png" />
             </div>
             {/* <h2>hello!</h2> */}
             <form className="card__body" onSubmit={addTask}>
@@ -146,7 +159,7 @@ export default function BaiTapToDoListSaga(props) {
                     <div className="card__todo">
                         {/* Uncompleted tasks */}
                         <ul className="todo" id="todo">
-                           {renderTaskToDo()}
+                            {renderTaskToDo()}
                         </ul>
                         {/* Completed tasks */}
                         <ul className="todo" id="completed">
