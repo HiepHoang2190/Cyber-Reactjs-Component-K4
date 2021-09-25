@@ -1,14 +1,14 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-import {useDispatch,useSelector} from 'react-redux';
-import { ADD_TASK_API, GET_TASKLIST_API } from '../../redux/constants/ToDoListConst';
+import { useDispatch, useSelector } from 'react-redux';
+import { ADD_TASK_API, GET_TASKLIST_API, DELETE_TASK_API, CHECK_TASK_API,REJECT_TASK_API } from '../../redux/constants/ToDoListConst';
 
 
 export default function BaiTapToDoListSaga(props) {
 
-    const dispatch = useDispatch(); 
-    const {taskList} = useSelector(state => state.ToDoListReducer)
+    const dispatch = useDispatch();
+    const { taskList } = useSelector(state => state.ToDoListReducer)
 
 
     let [state, setState] = useState({
@@ -49,15 +49,15 @@ export default function BaiTapToDoListSaga(props) {
     const getTaskList = () => {
         //Dispatch action saga
         dispatch({
-            type:GET_TASKLIST_API,
-           
+            type: GET_TASKLIST_API,
+
         })
     }
 
     const addTask = (e) => {
         e.preventDefault();
         dispatch({
-            type:ADD_TASK_API,
+            type: ADD_TASK_API,
             taskName: state.values.taskName
         })
     }
@@ -72,20 +72,29 @@ export default function BaiTapToDoListSaga(props) {
     }, [])
 
     //Xử lý reject task
-    const rejectTask = (taskName)=>{
-      
-
+    const rejectTask = (taskName) => {
+        dispatch({
+            type: REJECT_TASK_API,
+            taskName
+        })
     }
 
     //Xử lý done task
-   const  checkTask = (taskName) => {
-      
+    const checkTask = (taskName) => {
+        dispatch({
+            type: CHECK_TASK_API,
+            taskName
+        })
     }
 
 
     //Hàm xử lý xóa task
     const delTask = (taskName) => {
-   
+        console.log(taskName);
+        dispatch({
+            type: DELETE_TASK_API,
+            taskName: taskName
+        })
     }
 
 
@@ -135,9 +144,9 @@ export default function BaiTapToDoListSaga(props) {
 
     return (
         <div className="card">
-            <button className="btn btn-success" onClick={()=>{
+            <button className="btn btn-success" onClick={() => {
                 dispatch({
-                    type:'getTaskApiAction'
+                    type: 'getTaskApiAction'
                 })
             }}>Dispatch action saga getTaskAPI</button>
             <div className="card__header">
