@@ -1,12 +1,17 @@
 import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import SlideDown from '../../HOC/Modal/SlideDown';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 
-export default function DemoHOCModal() {
 
+
+export default function DemoHOCModal() {
+    const LoginWithSlideDown = new SlideDown(Login);
     const dispatch = useDispatch();
 
+    // Sử dụng dưới dạng thẻ thì phải xài function
+    // const LoginWithSlideDown = function(){return SlideDown(Login);} 
     return (
         <div>
             {/* Button trigger modal */}
@@ -26,6 +31,9 @@ export default function DemoHOCModal() {
             }} type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
                 Đăng ký
             </button>
+        {LoginWithSlideDown}
+        {/* sử dụng dưới dạng thẻ */}
+        {/* <LoginWithSlideDown/> */}
         </div>
     )
 }
