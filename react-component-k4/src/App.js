@@ -17,6 +17,8 @@ import LoadingComponent from './components/GlobalSetting/LoadingComponent';
 import DemoHOCModal from './pages/DemoHOCModal/DemoHOCModal';
 import Modal from './HOC/Modal/Modal';
 import { HomeTemplate } from './templates/HomeTemplate/HomeTemplate';
+import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
+import LoginCyberBugs from './pages/CyberBugs/LoginCyberBugs/LoginCyberBugs';
 function App() {
   return (
     <BrowserRouter>
@@ -33,7 +35,7 @@ function App() {
         < HomeTemplate path="/home" exact Component={Home}/>
         <HomeTemplate exact path='/contact' Component={Contact}/>
         <HomeTemplate exact path='/about' Component={About} />
-        <HomeTemplate exact path='/login' Component={Login} />
+        <UserLoginTemplate exact path='/login' Component={LoginCyberBugs} />
         <HomeTemplate exact path='/detail/:id' Component={Detail} />   
         <HomeTemplate exact path='/profile' Component={Profile} />  
         <HomeTemplate exact path='/todolistrfc' Component={TodolistRFC} />  
