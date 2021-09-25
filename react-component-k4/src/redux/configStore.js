@@ -6,6 +6,8 @@ import LoadingReducer from './reducers/LoadingReducer';
 import createMiddleWareSaga from 'redux-saga';
 import {rootSaga} from './sagas/rootSaga';
 
+import {ModalReducer} from './reducers/ModalReducer';
+
 const middleWareSaga = createMiddleWareSaga();
 
 
@@ -14,7 +16,8 @@ const middleWareSaga = createMiddleWareSaga();
 const rootReducer = combineReducers({
     //reducer khai báo tại đây
     ToDoListReducer,
-    LoadingReducer
+    LoadingReducer,
+    ModalReducer
 })
 
 
